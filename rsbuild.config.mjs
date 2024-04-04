@@ -1,6 +1,17 @@
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
+import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
 
 export default defineConfig({
   plugins: [pluginReact()],
+  module: {
+    module: {
+      rules: [
+        {
+          test: /\.css$/,
+          use: ["postcss-loader"],
+          type: "css",
+        },
+      ],
+    },
+  },
 });
