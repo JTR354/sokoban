@@ -1,6 +1,7 @@
 {
   "words": [
     "commitlint",
+    "immer",
     "linebreak",
     "rsbuild",
     "sokoban",
