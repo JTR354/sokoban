@@ -8,9 +8,29 @@ export const usePlayerStore = create(
         x: 1,
         y: 1,
       },
+      reset() {
+        return set((state) => {
+          state.player = { x: 1, y: 1 };
+        });
+      },
       movePlayerToLeft() {
         return set((state) => {
           state.player.x -= 1;
+        });
+      },
+      movePlayerToRight() {
+        return set((state) => {
+          state.player.x += 1;
+        });
+      },
+      movePlayerToUp() {
+        return set((state) => {
+          state.player.y -= 1;
+        });
+      },
+      movePlayerToDown() {
+        return set((state) => {
+          state.player.y += 1;
         });
       },
     };
