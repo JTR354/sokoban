@@ -3,60 +3,38 @@ import { immer } from "zustand/middleware/immer";
 import { useMapStore } from "./map";
 
 export const usePlayerStore = create(
-  immer((set) => {
+  immer((set, get) => {
     return {
       player: {
         x: 1,
         y: 1,
       },
-      setPlayer(player = { x: 1, y: 1 }) {
-        return set((state) => {
-          state.player = player;
+      _move(dx, dy) {
+        const { x, y } = get().player;
+        const { isWall } = useMapStore.getState();
+        const nextPosition = {
+          x: x + dx,
+          y: y + dy,
+        };
+        if (isWall(nextPosition)) return;
+        get().setPlayer(nextPosition);
+      },
+      setPlayer(position) {
+        return set(() => {
+          return { player: position };
         });
       },
       movePlayerToLeft() {
-        return set((state) => {
-          const { isWall } = useMapStore.getState();
-          const nextPosition = {
-            x: state.player.x - 1,
-            y: state.player.y,
-          };
-          if (isWall(nextPosition)) return;
-          state.player.x -= 1;
-        });
+        get()._move(-1, 0);
       },
       movePlayerToRight() {
-        return set((state) => {
-          const { isWall } = useMapStore.getState();
-          const nextPosition = {
-            x: state.player.x + 1,
-            y: state.player.y,
-          };
-          if (isWall(nextPosition)) return;
-          state.player.x += 1;
-        });
+        get()._move(1, 0);
       },
       movePlayerToUp() {
-        return set((state) => {
-          const { isWall } = useMapStore.getState();
-          const nextPosition = {
-            x: state.player.x,
-            y: state.player.y - 1,
-          };
-          if (isWall(nextPosition)) return;
-          state.player.y -= 1;
-        });
+        get()._move(0, -1);
       },
       movePlayerToDown() {
-        return set((state) => {
-          const { isWall } = useMapStore.getState();
-          const nextPosition = {
-            x: state.player.x,
-            y: state.player.y + 1,
-          };
-          if (isWall(nextPosition)) return;
-          state.player.y += 1;
-        });
+        get()._move(0, 1);
       },
     };
   }),
